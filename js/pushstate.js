@@ -1,6 +1,12 @@
-$( document ).ajaxComplete(function(e, xhr, settings) {
-      console.log(settings.url);
-      if (settings.url !== "/notifications/header") {
-        window.postMessage({ action: "lgtm:refresh" }, "*");
-      }
+$(document).on("pjax:end", function() {
+  window.postMessage({ action: "lgtm:refresh" }, "*");
 });
+
+function callRefresh() {
+  if (location.href.split("/").pop() !== "pulls") {
+    window.postMessage({ action: "lgtm:refresh" }, "*");
+  }
+}
+
+var refreshInterval = 1000;
+setInterval(callRefresh, refreshInterval);
